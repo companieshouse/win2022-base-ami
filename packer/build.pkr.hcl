@@ -6,9 +6,9 @@ build {
   provisioner "powershell" {
     inline = [
       # Re-initialise the AWS instance on startup
-      "C:/ProgramData/Amazon/EC2-Windows/Launch/Scripts/InitializeInstance.ps1 -Schedule *> InitializeInstance.log",
+      "& 'C:/Program Files/Amazon/EC2Launch/ec2launch' reset --block",
       # Remove system specific information from this image
-      "C:/ProgramData/Amazon/EC2-Windows/Launch/Scripts/SysprepInstance.ps1 -NoShutdown *> SysprepInstance.log"
+      "& 'C:/Program Files/Amazon/EC2Launch/ec2launch' sysprep --shutdown --block",
     ]
   }
 }
