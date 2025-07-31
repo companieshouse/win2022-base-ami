@@ -38,12 +38,6 @@ variable "aws_subnet_filter_name" {
   description = "The subnet filter string. Any filter described by the DescribeSubnets API documentation is valid. If multiple subnets match then the one with the most IPv4 addresses free will be used"
 }
 
-variable "encrypt_boot" {
-  type        = bool
-  default     = false
-  description = "Whether to encrypt the root volume of the AMI (and instances created from it)"
-}
-
 variable "force_delete_snapshot" {
   type        = bool
   default     = false
@@ -57,9 +51,9 @@ variable "force_deregister" {
 }
 
 variable "kms_key_id" {
+  default     = "alias/packer-builders-kms"
+  description = "The KMS key ID or alias to use when encrypting the AMI EBS volumes; defaults to the AWS managed key if empty"
   type        = string
-  default     = null
-  description = "KMS key ID, arn or alias to use for root volume encryption in the main region. If encrypt_boot is true and this is left null, the AWS default key is used"
 }
 
 variable "powershell_path" {
@@ -68,10 +62,22 @@ variable "powershell_path" {
   default     = "../powershell"
 }
 
+variable "root_volume_iops" {
+  default     = 3000
+  description = "The baseline IOPS for the root EBS volume; 3000 is the gp3 default"
+  type        = number
+}
+
 variable "root_volume_size_gb" {
   type        = number
   default     = 40
   description = "The EC2 instance root volume size in Gibibytes (GiB)"
+}
+
+variable "root_volume_throughput" {
+  default     = 125
+  description = "The throughput, in MiB/s, for the root EBS volume; 125 is the gp3 default"
+  type        = number
 }
 
 variable "ssh_private_key_file" {
